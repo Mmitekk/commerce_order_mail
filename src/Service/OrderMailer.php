@@ -23,8 +23,6 @@ final class OrderMailer {
     private readonly LoggerChannelFactoryInterface $loggerFactory,
     private readonly LanguageManagerInterface $languageManager,
     private readonly \Drupal\Core\Mail\MailManagerInterface $mailManager,
-    private readonly \Drupal\commerce_price\CurrencyFormatterInterface $currencyFormatter,
-    private readonly \Drupal\Core\Datetime\DateFormatterInterface $dateFormatter,
   ) {}
 
   public function sendOrderNotification(OrderInterface $order, bool $isTest = FALSE): bool {
@@ -55,13 +53,6 @@ final class OrderMailer {
     if (!$isHtml) {
       $subject = strip_tags($subject);
     }
-
-    $params = [
-      "subject" => $subject,
-      "body" => $body,
-      "is_html" => $isHtml,
-      "order" => $order,
-    ];
 
     $smtpHost = (string) $config->get("smtp_host");
     $smtpPort = (int) $config->get("smtp_port");
@@ -105,10 +96,7 @@ final class OrderMailer {
   private function sendViaSmtp(string $to, string $from, string $fromName, string $subject, string $body, bool $isHtml, string $host, int $port, string $encryption, string $user, string $pass, int $timeout, bool $allowSelfSigned): bool {
     try {
       $transport = new EsmtpTransport($host, $port, $encryption === "ssl");
-      if ($encryption === "tls") {
-        $transport->setStreamOptions(["ssl" => ["verify_peer" => !$allowSelfSigned, "verify_peer_name" => !$allowSelfSigned]]);
-      }
-      elseif ($encryption === "ssl") {
+      if ($encryption === "tls" || $encryption === "ssl") {
         $transport->setStreamOptions(["ssl" => ["verify_peer" => !$allowSelfSigned, "verify_peer_name" => !$allowSelfSigned]]);
       }
       if ($user !== "") {
