@@ -6,7 +6,7 @@ use Drupal\Core\Form\FormStateInterface;
 
 function commerce_order_mail_help(string $route_name): ?string {
   if ($route_name === "commerce_order_mail.settings") {
-    return t("Íàñòðîéòå SMTP è øàáëîíû ïèñåì äëÿ óâåäîìëåíèé î çàêàçàõ Commerce. Ïîääåðæêà òîêåíîâ Commerce è îáõîä îãðàíè÷åíèÿ ßíäåêñà SMTP ñ 29.06.2026.");
+    return t("ÐÐ°ÑÑ‚Ñ€Ð¾Ð¹Ñ‚Ðµ SMTP Ð¸ ÑˆÐ°Ð±Ð»Ð¾Ð½Ñ‹ Ð¿Ð¸ÑÐµÐ¼ Ð´Ð»Ñ ÑƒÐ²ÐµÐ´Ð¾Ð¼Ð»ÐµÐ½Ð¸Ð¹ Ð¾ Ð·Ð°ÐºÐ°Ð·Ð°Ñ… Commerce. ÐŸÐ¾Ð´Ð´ÐµÑ€Ð¶ÐºÐ° Ñ‚Ð¾ÐºÐµÐ½Ð¾Ð² Commerce Ð¸ Ð¾Ð±Ñ…Ð¾Ð´ Ð¾Ð³Ñ€Ð°Ð½Ð¸Ñ‡ÐµÐ½Ð¸Ñ Ð¯Ð½Ð´ÐµÐºÑÐ° SMTP Ñ 29.06.2026.");
   }
   return NULL;
 }
@@ -72,7 +72,7 @@ function _commerce_order_mail_build_items_table($order, bool $html): string {
   }
   $lines = [];
   foreach ($items as $item) {
-    $lines[] = sprintf("%s x %s — %s", $item->getTitle(), $item->getQuantity(), $item->getTotalPrice() ? $item->getTotalPrice()->__toString() : "-");
+    $lines[] = sprintf("%s x %s â€” %s", $item->getTitle(), $item->getQuantity(), $item->getTotalPrice() ? $item->getTotalPrice()->__toString() : "-");
   }
   $totalPrice = $order->getTotalPrice();
   if ($totalPrice) {

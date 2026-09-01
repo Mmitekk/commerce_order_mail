@@ -1,6 +1,6 @@
 name: Commerce Order Mail
 type: module
-description: "Доставка сабмитов заказов Drupal Commerce на email через настраиваемый SMTP (обход ограничения Яндекса с 29.06.2026). Поддержка шаблонов с токенами Commerce."
+description: "Р”РѕСЃС‚Р°РІРєР° СЃР°Р±РјРёС‚РѕРІ Р·Р°РєР°Р·РѕРІ Drupal Commerce РЅР° email С‡РµСЂРµР· РЅР°СЃС‚СЂР°РёРІР°РµРјС‹Р№ SMTP (РѕР±С…РѕРґ РѕРіСЂР°РЅРёС‡РµРЅРёСЏ РЇРЅРґРµРєСЃР° СЃ 29.06.2026). РџРѕРґРґРµСЂР¶РєР° С€Р°Р±Р»РѕРЅРѕРІ СЃ С‚РѕРєРµРЅР°РјРё Commerce."
 core_version_requirement: ^10 || ^11
 package: Commerce
 dependencies:

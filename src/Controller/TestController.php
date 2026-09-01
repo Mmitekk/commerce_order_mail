@@ -19,10 +19,10 @@ final class TestController extends ControllerBase {
   public function sendTest(): array {
     $ok = $this->mailer->sendTest();
     if ($ok) {
-      $this->messenger()->addStatus($this->t("Òåñòîâîå ïèñüìî îòïðàâëåíî. Ïðîâåðüòå ïî÷òó ïîëó÷àòåëÿ. / Test email sent."));
+      $this->messenger()->addStatus($this->t("Ð¢ÐµÑÑ‚Ð¾Ð²Ð¾Ðµ Ð¿Ð¸ÑÑŒÐ¼Ð¾ Ð¾Ñ‚Ð¿Ñ€Ð°Ð²Ð»ÐµÐ½Ð¾. ÐŸÑ€Ð¾Ð²ÐµÑ€ÑŒÑ‚Ðµ Ð¿Ð¾Ñ‡Ñ‚Ñƒ Ð¿Ð¾Ð»ÑƒÑ‡Ð°Ñ‚ÐµÐ»Ñ. / Test email sent."));
     }
     else {
-      $this->messenger()->addError($this->t("Íå óäàëîñü îòïðàâèòü òåñòîâîå ïèñüìî. Ñìîòðèòå ëîãè (admin/reports/dblog). / Failed to send test email. Check logs."));
+      $this->messenger()->addError($this->t("ÐÐµ ÑƒÐ´Ð°Ð»Ð¾ÑÑŒ Ð¾Ñ‚Ð¿Ñ€Ð°Ð²Ð¸Ñ‚ÑŒ Ñ‚ÐµÑÑ‚Ð¾Ð²Ð¾Ðµ Ð¿Ð¸ÑÑŒÐ¼Ð¾. Ð¡Ð¼Ð¾Ñ‚Ñ€Ð¸Ñ‚Ðµ Ð»Ð¾Ð³Ð¸ (admin/reports/dblog). / Failed to send test email. Check logs."));
     }
     return $this->redirect("commerce_order_mail.settings");
   }

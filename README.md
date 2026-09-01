@@ -2,11 +2,11 @@
 
 # Commerce Order Mail
 
-**Drupal Commerce > Email via configurable SMTP** · Обход ограничения Яндекса с 29.06.2026 · Gmail / любой SMTP · Шаблоны с токенами
+**Drupal Commerce > Email via configurable SMTP** В· РћР±С…РѕРґ РѕРіСЂР°РЅРёС‡РµРЅРёСЏ РЇРЅРґРµРєСЃР° СЃ 29.06.2026 В· Gmail / Р»СЋР±РѕР№ SMTP В· РЁР°Р±Р»РѕРЅС‹ СЃ С‚РѕРєРµРЅР°РјРё
 
 [![Latest Release](https://img.shields.io/github/v/release/Mmitekk/commerce_order_mail?sort=semver&label=latest)](https://github.com/Mmitekk/commerce_order_mail/releases) [![Drupal](https://img.shields.io/badge/Drupal-10%20%7C%2011-blue.svg)](https://drupal.org) [![Commerce](https://img.shields.io/badge/Commerce-2.x-orange.svg)](https://drupalcommerce.org) [![License: GPL v2](https://img.shields.io/badge/License-GPL--2.0-lightgrey.svg)](LICENSE)
 
-[???? Русский](#-русский) · [???? English](#-english) · [Установка](#-установка--installation) · [Настройка Gmail](#-настройка-gmail--gmail-setup) · [Токены](#-токены--tokens)
+[???? Р СѓСЃСЃРєРёР№](#-СЂСѓСЃСЃРєРёР№) В· [???? English](#-english) В· [РЈСЃС‚Р°РЅРѕРІРєР°](#-СѓСЃС‚Р°РЅРѕРІРєР°--installation) В· [РќР°СЃС‚СЂРѕР№РєР° Gmail](#-РЅР°СЃС‚СЂРѕР№РєР°-gmail--gmail-setup) В· [РўРѕРєРµРЅС‹](#-С‚РѕРєРµРЅС‹--tokens)
 
 </div>
 
@@ -20,47 +20,47 @@
 </style>
 
 <div class="tabs">
-<input type="radio" name="tabs" id="tab-ru" checked><label for="tab-ru">???? Русский</label>
+<input type="radio" name="tabs" id="tab-ru" checked><label for="tab-ru">???? Р СѓСЃСЃРєРёР№</label>
 <input type="radio" name="tabs" id="tab-en"><label for="tab-en">???? English</label>
 
 <div id="content-ru" class="tab-content">
 
-## ???? Русский
+## ???? Р СѓСЃСЃРєРёР№
 
-### Проблема
-С **29 июня 2026 года Яндекс отключил бесплатный доступ к почте по SMTP/IMAP/POP3** для доменов на Яндекс Почте. Отправка с сайта через `smtp.yandex.ru` теперь работает только на **платном тарифе Яндекс 360**. Если почта делегирована на Яндекс, стандартный `mail()` / SMTP Яндекса перестаёт работать.
+### РџСЂРѕР±Р»РµРјР°
+РЎ **29 РёСЋРЅСЏ 2026 РіРѕРґР° РЇРЅРґРµРєСЃ РѕС‚РєР»СЋС‡РёР» Р±РµСЃРїР»Р°С‚РЅС‹Р№ РґРѕСЃС‚СѓРї Рє РїРѕС‡С‚Рµ РїРѕ SMTP/IMAP/POP3** РґР»СЏ РґРѕРјРµРЅРѕРІ РЅР° РЇРЅРґРµРєСЃ РџРѕС‡С‚Рµ. РћС‚РїСЂР°РІРєР° СЃ СЃР°Р№С‚Р° С‡РµСЂРµР· `smtp.yandex.ru` С‚РµРїРµСЂСЊ СЂР°Р±РѕС‚Р°РµС‚ С‚РѕР»СЊРєРѕ РЅР° **РїР»Р°С‚РЅРѕРј С‚Р°СЂРёС„Рµ РЇРЅРґРµРєСЃ 360**. Р•СЃР»Рё РїРѕС‡С‚Р° РґРµР»РµРіРёСЂРѕРІР°РЅР° РЅР° РЇРЅРґРµРєСЃ, СЃС‚Р°РЅРґР°СЂС‚РЅС‹Р№ `mail()` / SMTP РЇРЅРґРµРєСЃР° РїРµСЂРµСЃС‚Р°С‘С‚ СЂР°Р±РѕС‚Р°С‚СЊ.
 
-### Решение
-**Commerce Order Mail** — модуль Drupal 10/11 для **доставки сабмитов заказов Drupal Commerce на email через любой SMTP**, который вы укажете в админке.
+### Р РµС€РµРЅРёРµ
+**Commerce Order Mail** вЂ” РјРѕРґСѓР»СЊ Drupal 10/11 РґР»СЏ **РґРѕСЃС‚Р°РІРєРё СЃР°Р±РјРёС‚РѕРІ Р·Р°РєР°Р·РѕРІ Drupal Commerce РЅР° email С‡РµСЂРµР· Р»СЋР±РѕР№ SMTP**, РєРѕС‚РѕСЂС‹Р№ РІС‹ СѓРєР°Р¶РµС‚Рµ РІ Р°РґРјРёРЅРєРµ.
 
-- В админке (`/admin/commerce/config/order-mail`) указываете **авторизационные данные любого ящика**: Google-аккаунт (Gmail), Mail.ru, корпоративный SMTP, SendGrid, Brevo и т.д.
-- Поля для **IMAP/SMTP настроек**: host, port, encryption (none/TLS/SSL), username, password/App Password, таймаут, allow self-signed.
-- **Шаблон темы и тела письма с токенами Commerce для Drupal 10** (использует `token`): `[commerce_order:order_number]`, `[commerce_order:total_price]`, `[commerce_order:mail]`, `[commerce_order:order_items_table]` и т.д.
-- Автоматическая отправка при переходе заказа в состояние `place`/`validate` (настраивается) + кнопка **«Отправить тестовое письмо»**.
-- Прямая отправка через `Symfony\Component\Mailer` (EsmtpTransport) — **минует Яндекс**. Если SMTP не настроен — fallback на стандартный `mail()` Drupal.
+- Р’ Р°РґРјРёРЅРєРµ (`/admin/commerce/config/order-mail`) СѓРєР°Р·С‹РІР°РµС‚Рµ **Р°РІС‚РѕСЂРёР·Р°С†РёРѕРЅРЅС‹Рµ РґР°РЅРЅС‹Рµ Р»СЋР±РѕРіРѕ СЏС‰РёРєР°**: Google-Р°РєРєР°СѓРЅС‚ (Gmail), Mail.ru, РєРѕСЂРїРѕСЂР°С‚РёРІРЅС‹Р№ SMTP, SendGrid, Brevo Рё С‚.Рґ.
+- РџРѕР»СЏ РґР»СЏ **IMAP/SMTP РЅР°СЃС‚СЂРѕРµРє**: host, port, encryption (none/TLS/SSL), username, password/App Password, С‚Р°Р№РјР°СѓС‚, allow self-signed.
+- **РЁР°Р±Р»РѕРЅ С‚РµРјС‹ Рё С‚РµР»Р° РїРёСЃСЊРјР° СЃ С‚РѕРєРµРЅР°РјРё Commerce РґР»СЏ Drupal 10** (РёСЃРїРѕР»СЊР·СѓРµС‚ `token`): `[commerce_order:order_number]`, `[commerce_order:total_price]`, `[commerce_order:mail]`, `[commerce_order:order_items_table]` Рё С‚.Рґ.
+- РђРІС‚РѕРјР°С‚РёС‡РµСЃРєР°СЏ РѕС‚РїСЂР°РІРєР° РїСЂРё РїРµСЂРµС…РѕРґРµ Р·Р°РєР°Р·Р° РІ СЃРѕСЃС‚РѕСЏРЅРёРµ `place`/`validate` (РЅР°СЃС‚СЂР°РёРІР°РµС‚СЃСЏ) + РєРЅРѕРїРєР° **В«РћС‚РїСЂР°РІРёС‚СЊ С‚РµСЃС‚РѕРІРѕРµ РїРёСЃСЊРјРѕВ»**.
+- РџСЂСЏРјР°СЏ РѕС‚РїСЂР°РІРєР° С‡РµСЂРµР· `Symfony\Component\Mailer` (EsmtpTransport) вЂ” **РјРёРЅСѓРµС‚ РЇРЅРґРµРєСЃ**. Р•СЃР»Рё SMTP РЅРµ РЅР°СЃС‚СЂРѕРµРЅ вЂ” fallback РЅР° СЃС‚Р°РЅРґР°СЂС‚РЅС‹Р№ `mail()` Drupal.
 
-> Ищете ли вы модуль для этого? Да — это он. Если не находили — теперь он есть.
+> РС‰РµС‚Рµ Р»Рё РІС‹ РјРѕРґСѓР»СЊ РґР»СЏ СЌС‚РѕРіРѕ? Р”Р° вЂ” СЌС‚Рѕ РѕРЅ. Р•СЃР»Рё РЅРµ РЅР°С…РѕРґРёР»Рё вЂ” С‚РµРїРµСЂСЊ РѕРЅ РµСЃС‚СЊ.
 
-### Возможности
-- Включение/выключение, список получателей через запятую
-- Отправитель (email + имя)
-- SMTP: host, port, шифрование, логин, пароль (хранится в config, не показывается повторно), таймаут
-- Шаблоны: тема (textfield) + тело (textarea, HTML/plain text)
-- Токены: все токены `commerce_order` + два дополнительных от модуля: `[commerce_order:order_items_table]` (HTML-таблица), `[commerce_order:order_items_text]` (plain text)
-- Триггеры: draft/validate/place/fulfillment/completed (чекбоксы)
-- Копия покупателю (опционально), логирование успеха
+### Р’РѕР·РјРѕР¶РЅРѕСЃС‚Рё
+- Р’РєР»СЋС‡РµРЅРёРµ/РІС‹РєР»СЋС‡РµРЅРёРµ, СЃРїРёСЃРѕРє РїРѕР»СѓС‡Р°С‚РµР»РµР№ С‡РµСЂРµР· Р·Р°РїСЏС‚СѓСЋ
+- РћС‚РїСЂР°РІРёС‚РµР»СЊ (email + РёРјСЏ)
+- SMTP: host, port, С€РёС„СЂРѕРІР°РЅРёРµ, Р»РѕРіРёРЅ, РїР°СЂРѕР»СЊ (С…СЂР°РЅРёС‚СЃСЏ РІ config, РЅРµ РїРѕРєР°Р·С‹РІР°РµС‚СЃСЏ РїРѕРІС‚РѕСЂРЅРѕ), С‚Р°Р№РјР°СѓС‚
+- РЁР°Р±Р»РѕРЅС‹: С‚РµРјР° (textfield) + С‚РµР»Рѕ (textarea, HTML/plain text)
+- РўРѕРєРµРЅС‹: РІСЃРµ С‚РѕРєРµРЅС‹ `commerce_order` + РґРІР° РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹С… РѕС‚ РјРѕРґСѓР»СЏ: `[commerce_order:order_items_table]` (HTML-С‚Р°Р±Р»РёС†Р°), `[commerce_order:order_items_text]` (plain text)
+- РўСЂРёРіРіРµСЂС‹: draft/validate/place/fulfillment/completed (С‡РµРєР±РѕРєСЃС‹)
+- РљРѕРїРёСЏ РїРѕРєСѓРїР°С‚РµР»СЋ (РѕРїС†РёРѕРЅР°Р»СЊРЅРѕ), Р»РѕРіРёСЂРѕРІР°РЅРёРµ СѓСЃРїРµС…Р°
 
-### Требования
+### РўСЂРµР±РѕРІР°РЅРёСЏ
 - Drupal `^10 || ^11`
 - Commerce `^2.0` (`commerce_order`)
-- Token `^1.0` (рекомендуется)
+- Token `^1.0` (СЂРµРєРѕРјРµРЅРґСѓРµС‚СЃСЏ)
 
-### Быстрый старт
-1. Установите (см. [Установка](#-установка--installation) ниже — без токена, берётся последний релиз).
-2. Включите: `drush en commerce_order_mail` или через `/admin/modules`.
-3. Откройте `/admin/commerce/config/order-mail`, заполните получателей, отправителя и SMTP Gmail/другого сервиса, сохраните.
-4. Нажмите «Отправить тестовое письмо», проверьте входящие.
-5. Оформите тестовый заказ — проверьте письмо.
+### Р‘С‹СЃС‚СЂС‹Р№ СЃС‚Р°СЂС‚
+1. РЈСЃС‚Р°РЅРѕРІРёС‚Рµ (СЃРј. [РЈСЃС‚Р°РЅРѕРІРєР°](#-СѓСЃС‚Р°РЅРѕРІРєР°--installation) РЅРёР¶Рµ вЂ” Р±РµР· С‚РѕРєРµРЅР°, Р±РµСЂС‘С‚СЃСЏ РїРѕСЃР»РµРґРЅРёР№ СЂРµР»РёР·).
+2. Р’РєР»СЋС‡РёС‚Рµ: `drush en commerce_order_mail` РёР»Рё С‡РµСЂРµР· `/admin/modules`.
+3. РћС‚РєСЂРѕР№С‚Рµ `/admin/commerce/config/order-mail`, Р·Р°РїРѕР»РЅРёС‚Рµ РїРѕР»СѓС‡Р°С‚РµР»РµР№, РѕС‚РїСЂР°РІРёС‚РµР»СЏ Рё SMTP Gmail/РґСЂСѓРіРѕРіРѕ СЃРµСЂРІРёСЃР°, СЃРѕС…СЂР°РЅРёС‚Рµ.
+4. РќР°Р¶РјРёС‚Рµ В«РћС‚РїСЂР°РІРёС‚СЊ С‚РµСЃС‚РѕРІРѕРµ РїРёСЃСЊРјРѕВ», РїСЂРѕРІРµСЂСЊС‚Рµ РІС…РѕРґСЏС‰РёРµ.
+5. РћС„РѕСЂРјРёС‚Рµ С‚РµСЃС‚РѕРІС‹Р№ Р·Р°РєР°Р· вЂ” РїСЂРѕРІРµСЂСЊС‚Рµ РїРёСЃСЊРјРѕ.
 
 </div>
 
@@ -78,7 +78,7 @@ Since **June 29, 2026 Yandex disabled free SMTP/IMAP/POP3** for domains delegate
 - Fields for **IMAP/SMTP settings**: host, port, encryption (none/TLS/SSL), username, password/App Password, timeout, allow self-signed.
 - **Subject & body templates with Drupal 10 Commerce tokens** (via `token`): `[commerce_order:order_number]`, `[commerce_order:total_price]`, `[commerce_order:mail]`, `[commerce_order:order_items_table]`, etc.
 - Auto-send on order transition to `place`/`validate` (configurable) + **Send test email** button.
-- Direct send via `Symfony\Component\Mailer` (EsmtpTransport) — **bypasses Yandex**. Falls back to Drupal default mail if SMTP not configured.
+- Direct send via `Symfony\Component\Mailer` (EsmtpTransport) вЂ” **bypasses Yandex**. Falls back to Drupal default mail if SMTP not configured.
 
 ### Features
 - Enable/disable, comma-separated recipients
@@ -95,10 +95,10 @@ Since **June 29, 2026 Yandex disabled free SMTP/IMAP/POP3** for domains delegate
 - Token `^1.0` (recommended)
 
 ### Quick start
-1. Install (see [Installation](#-установка--installation) below — no token, latest release).
+1. Install (see [Installation](#-СѓСЃС‚Р°РЅРѕРІРєР°--installation) below вЂ” no token, latest release).
 2. Enable: `drush en commerce_order_mail`.
 3. Go to `/admin/commerce/config/order-mail`, fill recipients, sender and SMTP (Gmail/other), save.
-4. Click “Send test email”.
+4. Click вЂњSend test emailвЂќ.
 5. Place a test order.
 
 </div>
@@ -106,11 +106,11 @@ Since **June 29, 2026 Yandex disabled free SMTP/IMAP/POP3** for domains delegate
 
 ---
 
-## ?? Установка / Installation
+## ?? РЈСЃС‚Р°РЅРѕРІРєР° / Installation
 
-> **Без токена и без `dev-main`. Модуль ставится с последнего GitHub Release.**
+> **Р‘РµР· С‚РѕРєРµРЅР° Рё Р±РµР· `dev-main`. РњРѕРґСѓР»СЊ СЃС‚Р°РІРёС‚СЃСЏ СЃ РїРѕСЃР»РµРґРЅРµРіРѕ GitHub Release.**
 
-### Вариант A — стабильный релиз (рекомендуется)
+### Р’Р°СЂРёР°РЅС‚ A вЂ” СЃС‚Р°Р±РёР»СЊРЅС‹Р№ СЂРµР»РёР· (СЂРµРєРѕРјРµРЅРґСѓРµС‚СЃСЏ)
 
 ```bash
 composer config repositories.commerce_order_mail vcs https://github.com/Mmitekk/commerce_order_mail
@@ -118,82 +118,82 @@ composer require mmitekk/commerce_order_mail:^1.0
 drush en commerce_order_mail -y
 ```
 
-> `^1.0` автоматически берёт **последний билд (latest release)**. Никаких `dev-main`/`dev-master`. Репозиторий публичный — токен не нужен.
+> `^1.0` Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё Р±РµСЂС‘С‚ **РїРѕСЃР»РµРґРЅРёР№ Р±РёР»Рґ (latest release)**. РќРёРєР°РєРёС… `dev-main`/`dev-master`. Р РµРїРѕР·РёС‚РѕСЂРёР№ РїСѓР±Р»РёС‡РЅС‹Р№ вЂ” С‚РѕРєРµРЅ РЅРµ РЅСѓР¶РµРЅ.
 
-### Вариант B — напрямую с релиза (без composer repositories)
+### Р’Р°СЂРёР°РЅС‚ B вЂ” РЅР°РїСЂСЏРјСѓСЋ СЃ СЂРµР»РёР·Р° (Р±РµР· composer repositories)
 
 ```bash
 composer require mmitekk/commerce_order_mail
 ```
-Если пакет ещё не на Packagist, используйте Вариант A (vcs).
+Р•СЃР»Рё РїР°РєРµС‚ РµС‰С‘ РЅРµ РЅР° Packagist, РёСЃРїРѕР»СЊР·СѓР№С‚Рµ Р’Р°СЂРёР°РЅС‚ A (vcs).
 
-### Обновление
+### РћР±РЅРѕРІР»РµРЅРёРµ
 
 ```bash
 composer update mmitekk/commerce_order_mail
 drush updb -y && drush cr
 ```
 
-### Ручная установка
+### Р СѓС‡РЅР°СЏ СѓСЃС‚Р°РЅРѕРІРєР°
 
-Скачайте zip последнего релиза: https://github.com/Mmitekk/commerce_order_mail/releases/latest > распакуйте в `modules/contrib/commerce_order_mail`.
+РЎРєР°С‡Р°Р№С‚Рµ zip РїРѕСЃР»РµРґРЅРµРіРѕ СЂРµР»РёР·Р°: https://github.com/Mmitekk/commerce_order_mail/releases/latest > СЂР°СЃРїР°РєСѓР№С‚Рµ РІ `modules/contrib/commerce_order_mail`.
 
 ---
 
-## ?? Настройка Gmail / Gmail setup
+## ?? РќР°СЃС‚СЂРѕР№РєР° Gmail / Gmail setup
 
-| Поле | Значение |
+| РџРѕР»Рµ | Р—РЅР°С‡РµРЅРёРµ |
 |------|----------|
 | SMTP host | `smtp.gmail.com` |
-| Port | `587` + TLS **или** `465` + SSL |
-| Username | `your@gmail.com` (полный адрес Google-аккаунта) |
-| Password | **App Password** (16 символов) |
+| Port | `587` + TLS **РёР»Рё** `465` + SSL |
+| Username | `your@gmail.com` (РїРѕР»РЅС‹Р№ Р°РґСЂРµСЃ Google-Р°РєРєР°СѓРЅС‚Р°) |
+| Password | **App Password** (16 СЃРёРјРІРѕР»РѕРІ) |
 
-Создание App Password: `myaccount.google.com` > **Безопасность** > **Двухэтапная аутентификация** (включить) > **Пароли приложений** > создайте для «Почта» > скопируйте 16-символьный пароль в поле SMTP password модуля.
+РЎРѕР·РґР°РЅРёРµ App Password: `myaccount.google.com` > **Р‘РµР·РѕРїР°СЃРЅРѕСЃС‚СЊ** > **Р”РІСѓС…СЌС‚Р°РїРЅР°СЏ Р°СѓС‚РµРЅС‚РёС„РёРєР°С†РёСЏ** (РІРєР»СЋС‡РёС‚СЊ) > **РџР°СЂРѕР»Рё РїСЂРёР»РѕР¶РµРЅРёР№** > СЃРѕР·РґР°Р№С‚Рµ РґР»СЏ В«РџРѕС‡С‚Р°В» > СЃРєРѕРїРёСЂСѓР№С‚Рµ 16-СЃРёРјРІРѕР»СЊРЅС‹Р№ РїР°СЂРѕР»СЊ РІ РїРѕР»Рµ SMTP password РјРѕРґСѓР»СЏ.
 
-IMAP (если нужен для чтения, для отправки не требуется): `imap.gmail.com:993` SSL.
+IMAP (РµСЃР»Рё РЅСѓР¶РµРЅ РґР»СЏ С‡С‚РµРЅРёСЏ, РґР»СЏ РѕС‚РїСЂР°РІРєРё РЅРµ С‚СЂРµР±СѓРµС‚СЃСЏ): `imap.gmail.com:993` SSL.
 
-Для Mail.ru: `smtp.mail.ru:465` SSL. Для корпоративного — уточните у админа. Для SendGrid/Brevo — их SMTP host/port/key.
+Р”Р»СЏ Mail.ru: `smtp.mail.ru:465` SSL. Р”Р»СЏ РєРѕСЂРїРѕСЂР°С‚РёРІРЅРѕРіРѕ вЂ” СѓС‚РѕС‡РЅРёС‚Рµ Сѓ Р°РґРјРёРЅР°. Р”Р»СЏ SendGrid/Brevo вЂ” РёС… SMTP host/port/key.
 
 ---
 
-## ?? Токены / Tokens
+## ?? РўРѕРєРµРЅС‹ / Tokens
 
-Используются стандартные токены Commerce для Drupal 10 + два от модуля:
+РСЃРїРѕР»СЊР·СѓСЋС‚СЃСЏ СЃС‚Р°РЅРґР°СЂС‚РЅС‹Рµ С‚РѕРєРµРЅС‹ Commerce РґР»СЏ Drupal 10 + РґРІР° РѕС‚ РјРѕРґСѓР»СЏ:
 
 ```
-[commerce_order:order_number]      — номер заказа
-[commerce_order:total_price]       — сумма
-[commerce_order:mail]              — email покупателя
-[commerce_order:created]           — дата создания
-[commerce_order:state]             — состояние
-[commerce_order:order_items]       — товары (дефолт)
-[commerce_order:order_items_table] — ? HTML-таблица товаров (модуль)
-[commerce_order:order_items_text]  — ? plain-text список товаров (модуль)
-[commerce_order:billing_profile]   — профиль плательщика
-[commerce_order:shipping_profile]  — доставка
+[commerce_order:order_number]      вЂ” РЅРѕРјРµСЂ Р·Р°РєР°Р·Р°
+[commerce_order:total_price]       вЂ” СЃСѓРјРјР°
+[commerce_order:mail]              вЂ” email РїРѕРєСѓРїР°С‚РµР»СЏ
+[commerce_order:created]           вЂ” РґР°С‚Р° СЃРѕР·РґР°РЅРёСЏ
+[commerce_order:state]             вЂ” СЃРѕСЃС‚РѕСЏРЅРёРµ
+[commerce_order:order_items]       вЂ” С‚РѕРІР°СЂС‹ (РґРµС„РѕР»С‚)
+[commerce_order:order_items_table] вЂ” ? HTML-С‚Р°Р±Р»РёС†Р° С‚РѕРІР°СЂРѕРІ (РјРѕРґСѓР»СЊ)
+[commerce_order:order_items_text]  вЂ” ? plain-text СЃРїРёСЃРѕРє С‚РѕРІР°СЂРѕРІ (РјРѕРґСѓР»СЊ)
+[commerce_order:billing_profile]   вЂ” РїСЂРѕС„РёР»СЊ РїР»Р°С‚РµР»СЊС‰РёРєР°
+[commerce_order:shipping_profile]  вЂ” РґРѕСЃС‚Р°РІРєР°
 [site:name] [site:url] [user:display-name] ...
 ```
 
-Полный список: `/admin/help/token` (модуль Token > Browse available tokens).
+РџРѕР»РЅС‹Р№ СЃРїРёСЃРѕРє: `/admin/help/token` (РјРѕРґСѓР»СЊ Token > Browse available tokens).
 
-**Пример темы:** `Новый заказ [commerce_order:order_number] на [site:name]`
-**Пример тела:** см. дефолтный шаблон в настройках (HTML с таблицей товаров).
+**РџСЂРёРјРµСЂ С‚РµРјС‹:** `РќРѕРІС‹Р№ Р·Р°РєР°Р· [commerce_order:order_number] РЅР° [site:name]`
+**РџСЂРёРјРµСЂ С‚РµР»Р°:** СЃРј. РґРµС„РѕР»С‚РЅС‹Р№ С€Р°Р±Р»РѕРЅ РІ РЅР°СЃС‚СЂРѕР№РєР°С… (HTML СЃ С‚Р°Р±Р»РёС†РµР№ С‚РѕРІР°СЂРѕРІ).
 
 ---
 
 ## ?? Troubleshooting
 
-- **Письмо не приходит** > проверьте `/admin/reports/dblog` (канал `commerce_order_mail`), проверьте получателей (запятая, без пробелов в конце), проверьте SMTP App Password, попробуйте порт 465/SSL.
-- **Yandex** > не используйте `smtp.yandex.ru` без Яндекс 360. Переключите на Gmail/другой SMTP.
-- **Токены не заменяются** > включите модуль `token`, очистите кэш `drush cr`.
-- **HTML уезжает** > выберите `text/html` в формате тела, проверьте шаблон.
+- **РџРёСЃСЊРјРѕ РЅРµ РїСЂРёС…РѕРґРёС‚** > РїСЂРѕРІРµСЂСЊС‚Рµ `/admin/reports/dblog` (РєР°РЅР°Р» `commerce_order_mail`), РїСЂРѕРІРµСЂСЊС‚Рµ РїРѕР»СѓС‡Р°С‚РµР»РµР№ (Р·Р°РїСЏС‚Р°СЏ, Р±РµР· РїСЂРѕР±РµР»РѕРІ РІ РєРѕРЅС†Рµ), РїСЂРѕРІРµСЂСЊС‚Рµ SMTP App Password, РїРѕРїСЂРѕР±СѓР№С‚Рµ РїРѕСЂС‚ 465/SSL.
+- **Yandex** > РЅРµ РёСЃРїРѕР»СЊР·СѓР№С‚Рµ `smtp.yandex.ru` Р±РµР· РЇРЅРґРµРєСЃ 360. РџРµСЂРµРєР»СЋС‡РёС‚Рµ РЅР° Gmail/РґСЂСѓРіРѕР№ SMTP.
+- **РўРѕРєРµРЅС‹ РЅРµ Р·Р°РјРµРЅСЏСЋС‚СЃСЏ** > РІРєР»СЋС‡РёС‚Рµ РјРѕРґСѓР»СЊ `token`, РѕС‡РёСЃС‚РёС‚Рµ РєСЌС€ `drush cr`.
+- **HTML СѓРµР·Р¶Р°РµС‚** > РІС‹Р±РµСЂРёС‚Рµ `text/html` РІ С„РѕСЂРјР°С‚Рµ С‚РµР»Р°, РїСЂРѕРІРµСЂСЊС‚Рµ С€Р°Р±Р»РѕРЅ.
 
 ---
 
 ## ?? License
 
-GPL-2.0-or-later. См. [LICENSE](LICENSE).
+GPL-2.0-or-later. РЎРј. [LICENSE](LICENSE).
 
 ## ?? Issues
 
@@ -201,4 +201,4 @@ https://github.com/Mmitekk/commerce_order_mail/issues
 
 ---
 
-<div align="center"><sub>Сделано для обхода ограничения Яндекса 29.06.2026 · Made to bypass Yandex restriction 2026-06-29</sub></div>
+<div align="center"><sub>РЎРґРµР»Р°РЅРѕ РґР»СЏ РѕР±С…РѕРґР° РѕРіСЂР°РЅРёС‡РµРЅРёСЏ РЇРЅРґРµРєСЃР° 29.06.2026 В· Made to bypass Yandex restriction 2026-06-29</sub></div>

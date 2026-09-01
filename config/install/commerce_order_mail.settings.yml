@@ -9,19 +9,19 @@ smtp_username: ""
 smtp_password: ""
 smtp_allow_self_signed: false
 smtp_timeout: 15
-subject_template: "Новый заказ [commerce_order:order_number] на [site:name]"
+subject_template: "РќРѕРІС‹Р№ Р·Р°РєР°Р· [commerce_order:order_number] РЅР° [site:name]"
 body_template: |
-  <h2>Новый заказ [commerce_order:order_number]</h2>
-  <p><strong>Дата:</strong> [commerce_order:created]</p>
-  <p><strong>Клиент:</strong> [commerce_order:mail] ([commerce_order:customer_id])</p>
-  <p><strong>Сумма:</strong> [commerce_order:total_price]</p>
-  <p><strong>Состояние:</strong> [commerce_order:state]</p>
+  <h2>РќРѕРІС‹Р№ Р·Р°РєР°Р· [commerce_order:order_number]</h2>
+  <p><strong>Р”Р°С‚Р°:</strong> [commerce_order:created]</p>
+  <p><strong>РљР»РёРµРЅС‚:</strong> [commerce_order:mail] ([commerce_order:customer_id])</p>
+  <p><strong>РЎСѓРјРјР°:</strong> [commerce_order:total_price]</p>
+  <p><strong>РЎРѕСЃС‚РѕСЏРЅРёРµ:</strong> [commerce_order:state]</p>
   <hr>
-  <h3>Состав заказа</h3>
+  <h3>РЎРѕСЃС‚Р°РІ Р·Р°РєР°Р·Р°</h3>
   [commerce_order:order_items_table]
   <hr>
-  <p><strong>Адрес доставки:</strong><br>[commerce_order:shipping_profile]</p>
-  <p><strong>Адрес выставления счета:</strong><br>[commerce_order:billing_profile]</p>
+  <p><strong>РђРґСЂРµСЃ РґРѕСЃС‚Р°РІРєРё:</strong><br>[commerce_order:shipping_profile]</p>
+  <p><strong>РђРґСЂРµСЃ РІС‹СЃС‚Р°РІР»РµРЅРёСЏ СЃС‡РµС‚Р°:</strong><br>[commerce_order:billing_profile]</p>
 body_format: "text/html"
 trigger_states:
   - "place"

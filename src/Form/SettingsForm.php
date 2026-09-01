@@ -24,45 +24,45 @@ final class SettingsForm extends ConfigFormBase {
 
     $form["intro"] = [
       "#type" => "markup",
-      "#markup" => "<div class=\"messages messages--warning\"><strong>Важно (29.06.2026):</strong> Яндекс отключил бесплатный SMTP/IMAP/POP3. Для отправки с сайта используйте внешний SMTP — Gmail (App Password / OAuth2), Mail.ru, корпоративный SMTP, или сервис транзакционной почты (SendGrid, Mailgun, Brevo). Этот модуль отправляет напрямую через указанный SMTP, минуя smtp.yandex.ru.<br><strong>Important (2026-06-29):</strong> Yandex disabled free SMTP/IMAP/POP3. Use external SMTP — Gmail (App Password/OAuth2), etc.</div>",
+      "#markup" => "<div class=\"messages messages--warning\"><strong>Р’Р°Р¶РЅРѕ (29.06.2026):</strong> РЇРЅРґРµРєСЃ РѕС‚РєР»СЋС‡РёР» Р±РµСЃРїР»Р°С‚РЅС‹Р№ SMTP/IMAP/POP3. Р”Р»СЏ РѕС‚РїСЂР°РІРєРё СЃ СЃР°Р№С‚Р° РёСЃРїРѕР»СЊР·СѓР№С‚Рµ РІРЅРµС€РЅРёР№ SMTP вЂ” Gmail (App Password / OAuth2), Mail.ru, РєРѕСЂРїРѕСЂР°С‚РёРІРЅС‹Р№ SMTP, РёР»Рё СЃРµСЂРІРёСЃ С‚СЂР°РЅР·Р°РєС†РёРѕРЅРЅРѕР№ РїРѕС‡С‚С‹ (SendGrid, Mailgun, Brevo). Р­С‚РѕС‚ РјРѕРґСѓР»СЊ РѕС‚РїСЂР°РІР»СЏРµС‚ РЅР°РїСЂСЏРјСѓСЋ С‡РµСЂРµР· СѓРєР°Р·Р°РЅРЅС‹Р№ SMTP, РјРёРЅСѓСЏ smtp.yandex.ru.<br><strong>Important (2026-06-29):</strong> Yandex disabled free SMTP/IMAP/POP3. Use external SMTP вЂ” Gmail (App Password/OAuth2), etc.</div>",
     ];
 
     $form["enabled"] = [
       "#type" => "checkbox",
-      "#title" => $this->t("Включить отправку уведомлений / Enable notifications"),
+      "#title" => $this->t("Р’РєР»СЋС‡РёС‚СЊ РѕС‚РїСЂР°РІРєСѓ СѓРІРµРґРѕРјР»РµРЅРёР№ / Enable notifications"),
       "#default_value" => $config->get("enabled"),
     ];
 
     $form["recipients"] = [
       "#type" => "fieldset",
-      "#title" => $this->t("Получатели / Recipients"),
+      "#title" => $this->t("РџРѕР»СѓС‡Р°С‚РµР»Рё / Recipients"),
     ];
     $form["recipients"]["recipient"] = [
       "#type" => "textfield",
-      "#title" => $this->t("Email получателя(ей) (через запятую) / Recipient email(s) comma-separated"),
+      "#title" => $this->t("Email РїРѕР»СѓС‡Р°С‚РµР»СЏ(РµР№) (С‡РµСЂРµР· Р·Р°РїСЏС‚СѓСЋ) / Recipient email(s) comma-separated"),
       "#default_value" => $config->get("recipient"),
-      "#description" => $this->t("Куда доставлять сабмиты заказов. Пример: manager@example.com, info@example.com"),
+      "#description" => $this->t("РљСѓРґР° РґРѕСЃС‚Р°РІР»СЏС‚СЊ СЃР°Р±РјРёС‚С‹ Р·Р°РєР°Р·РѕРІ. РџСЂРёРјРµСЂ: manager@example.com, info@example.com"),
       "#required" => TRUE,
     ];
     $form["recipients"]["sender"] = [
       "#type" => "email",
-      "#title" => $this->t("Email отправителя / Sender email"),
+      "#title" => $this->t("Email РѕС‚РїСЂР°РІРёС‚РµР»СЏ / Sender email"),
       "#default_value" => $config->get("sender"),
-      "#description" => $this->t("Должен совпадать с SMTP-пользователем (для Gmail — тот же Google-аккаунт). Рекомендуется совпадать с доменом сайта для SPF/DKIM."),
+      "#description" => $this->t("Р”РѕР»Р¶РµРЅ СЃРѕРІРїР°РґР°С‚СЊ СЃ SMTP-РїРѕР»СЊР·РѕРІР°С‚РµР»РµРј (РґР»СЏ Gmail вЂ” С‚РѕС‚ Р¶Рµ Google-Р°РєРєР°СѓРЅС‚). Р РµРєРѕРјРµРЅРґСѓРµС‚СЃСЏ СЃРѕРІРїР°РґР°С‚СЊ СЃ РґРѕРјРµРЅРѕРј СЃР°Р№С‚Р° РґР»СЏ SPF/DKIM."),
       "#required" => TRUE,
     ];
     $form["recipients"]["sender_name"] = [
       "#type" => "textfield",
-      "#title" => $this->t("Имя отправителя / Sender name"),
+      "#title" => $this->t("РРјСЏ РѕС‚РїСЂР°РІРёС‚РµР»СЏ / Sender name"),
       "#default_value" => $config->get("sender_name"),
-      "#description" => $this->t("Например: Магазин Example"),
+      "#description" => $this->t("РќР°РїСЂРёРјРµСЂ: РњР°РіР°Р·РёРЅ Example"),
     ];
 
     $form["smtp"] = [
       "#type" => "details",
-      "#title" => $this->t("SMTP / IMAP настройки (авторизационные данные)"),
+      "#title" => $this->t("SMTP / IMAP РЅР°СЃС‚СЂРѕР№РєРё (Р°РІС‚РѕСЂРёР·Р°С†РёРѕРЅРЅС‹Рµ РґР°РЅРЅС‹Рµ)"),
       "#open" => TRUE,
-      "#description" => $this->t("Укажите данные Google-аккаунта или любого SMTP. Для Gmail: host=smtp.gmail.com, port=587, encryption=tls, user=ваш@gmail.com, password=App Password (16 символов) — создаётся в myaccount.google.com > Безопасность > Пароли приложений. IMAP для чтения не требуется для отправки, но если нужен — imap.gmail.com:993/ssl."),
+      "#description" => $this->t("РЈРєР°Р¶РёС‚Рµ РґР°РЅРЅС‹Рµ Google-Р°РєРєР°СѓРЅС‚Р° РёР»Рё Р»СЋР±РѕРіРѕ SMTP. Р”Р»СЏ Gmail: host=smtp.gmail.com, port=587, encryption=tls, user=РІР°С€@gmail.com, password=App Password (16 СЃРёРјРІРѕР»РѕРІ) вЂ” СЃРѕР·РґР°С‘С‚СЃСЏ РІ myaccount.google.com > Р‘РµР·РѕРїР°СЃРЅРѕСЃС‚СЊ > РџР°СЂРѕР»Рё РїСЂРёР»РѕР¶РµРЅРёР№. IMAP РґР»СЏ С‡С‚РµРЅРёСЏ РЅРµ С‚СЂРµР±СѓРµС‚СЃСЏ РґР»СЏ РѕС‚РїСЂР°РІРєРё, РЅРѕ РµСЃР»Рё РЅСѓР¶РµРЅ вЂ” imap.gmail.com:993/ssl."),
     ];
     $form["smtp"]["smtp_host"] = [
       "#type" => "textfield",
@@ -78,34 +78,34 @@ final class SettingsForm extends ConfigFormBase {
       "#required" => TRUE,
       "#min" => 1,
       "#max" => 65535,
-      "#description" => $this->t("Gmail: 587 (TLS) или 465 (SSL). Mail.ru: 465. Яндекс 360 платный: smtp.yandex.ru 465."),
+      "#description" => $this->t("Gmail: 587 (TLS) РёР»Рё 465 (SSL). Mail.ru: 465. РЇРЅРґРµРєСЃ 360 РїР»Р°С‚РЅС‹Р№: smtp.yandex.ru 465."),
     ];
     $form["smtp"]["smtp_encryption"] = [
       "#type" => "select",
-      "#title" => $this->t("Шифрование / Encryption"),
+      "#title" => $this->t("РЁРёС„СЂРѕРІР°РЅРёРµ / Encryption"),
       "#options" => ["none" => $this->t("None"), "tls" => "TLS (STARTTLS)", "ssl" => "SSL"],
       "#default_value" => $config->get("smtp_encryption"),
     ];
     $form["smtp"]["smtp_username"] = [
       "#type" => "textfield",
-      "#title" => $this->t("SMTP пользователь / Username (Google account email)"),
+      "#title" => $this->t("SMTP РїРѕР»СЊР·РѕРІР°С‚РµР»СЊ / Username (Google account email)"),
       "#default_value" => $config->get("smtp_username"),
-      "#description" => $this->t("Для Gmail — полный адрес Gmail. Для других — логин SMTP."),
+      "#description" => $this->t("Р”Р»СЏ Gmail вЂ” РїРѕР»РЅС‹Р№ Р°РґСЂРµСЃ Gmail. Р”Р»СЏ РґСЂСѓРіРёС… вЂ” Р»РѕРіРёРЅ SMTP."),
     ];
     $form["smtp"]["smtp_password"] = [
       "#type" => "password",
-      "#title" => $this->t("SMTP пароль / Password or App Password"),
-      "#description" => $this->t("Оставьте пустым чтобы не менять. Для Gmail используйте App Password, не обычный пароль."),
+      "#title" => $this->t("SMTP РїР°СЂРѕР»СЊ / Password or App Password"),
+      "#description" => $this->t("РћСЃС‚Р°РІСЊС‚Рµ РїСѓСЃС‚С‹Рј С‡С‚РѕР±С‹ РЅРµ РјРµРЅСЏС‚СЊ. Р”Р»СЏ Gmail РёСЃРїРѕР»СЊР·СѓР№С‚Рµ App Password, РЅРµ РѕР±С‹С‡РЅС‹Р№ РїР°СЂРѕР»СЊ."),
       "#attributes" => ["autocomplete" => "new-password"],
     ];
     $form["smtp"]["smtp_allow_self_signed"] = [
       "#type" => "checkbox",
-      "#title" => $this->t("Разрешить самоподписанные сертификаты"),
+      "#title" => $this->t("Р Р°Р·СЂРµС€РёС‚СЊ СЃР°РјРѕРїРѕРґРїРёСЃР°РЅРЅС‹Рµ СЃРµСЂС‚РёС„РёРєР°С‚С‹"),
       "#default_value" => $config->get("smtp_allow_self_signed"),
     ];
     $form["smtp"]["smtp_timeout"] = [
       "#type" => "number",
-      "#title" => $this->t("Таймаут (сек)"),
+      "#title" => $this->t("РўР°Р№РјР°СѓС‚ (СЃРµРє)"),
       "#default_value" => $config->get("smtp_timeout") ?? 15,
       "#min" => 5,
       "#max" => 60,
@@ -113,43 +113,43 @@ final class SettingsForm extends ConfigFormBase {
 
     $form["templates"] = [
       "#type" => "details",
-      "#title" => $this->t("Шаблоны письма / Email templates"),
+      "#title" => $this->t("РЁР°Р±Р»РѕРЅС‹ РїРёСЃСЊРјР° / Email templates"),
       "#open" => TRUE,
     ];
     $form["templates"]["subject_template"] = [
       "#type" => "textfield",
-      "#title" => $this->t("Шаблон темы / Subject template"),
+      "#title" => $this->t("РЁР°Р±Р»РѕРЅ С‚РµРјС‹ / Subject template"),
       "#default_value" => $config->get("subject_template"),
       "#required" => TRUE,
       "#maxlength" => 255,
     ];
     $form["templates"]["body_template"] = [
       "#type" => "textarea",
-      "#title" => $this->t("Шаблон тела письма / Body template"),
+      "#title" => $this->t("РЁР°Р±Р»РѕРЅ С‚РµР»Р° РїРёСЃСЊРјР° / Body template"),
       "#default_value" => $config->get("body_template"),
       "#rows" => 16,
       "#required" => TRUE,
     ];
     $form["templates"]["body_format"] = [
       "#type" => "select",
-      "#title" => $this->t("Формат тела"),
+      "#title" => $this->t("Р¤РѕСЂРјР°С‚ С‚РµР»Р°"),
       "#options" => ["text/html" => $this->t("HTML"), "text/plain" => $this->t("Plain text")],
       "#default_value" => $config->get("body_format"),
     ];
     $form["templates"]["token_help"] = [
       "#type" => "markup",
-      "#markup" => "<details><summary>" . $this->t("Доступные токены Commerce / Available tokens") . "</summary>" .
-        "<p>" . $this->t("Используйте токены модуля Commerce для Drupal 10:") . "</p><ul>" .
-        "<li><code>[commerce_order:order_number]</code> — " . $this->t("Order number") . "</li>" .
-        "<li><code>[commerce_order:total_price]</code> — " . $this->t("Total price") . "</li>" .
-        "<li><code>[commerce_order:mail]</code> — " . $this->t("Customer email") . "</li>" .
-        "<li><code>[commerce_order:created]</code> — " . $this->t("Created date") . "</li>" .
-        "<li><code>[commerce_order:state]</code> — " . $this->t("Order state") . "</li>" .
-        "<li><code>[commerce_order:order_items]</code> — " . $this->t("Items (default)") . "</li>" .
-        "<li><code>[commerce_order:order_items_table]</code> — " . $this->t("HTML table (provided by this module)") . "</li>" .
-        "<li><code>[commerce_order:order_items_text]</code> — " . $this->t("Plain text items") . "</li>" .
+      "#markup" => "<details><summary>" . $this->t("Р”РѕСЃС‚СѓРїРЅС‹Рµ С‚РѕРєРµРЅС‹ Commerce / Available tokens") . "</summary>" .
+        "<p>" . $this->t("РСЃРїРѕР»СЊР·СѓР№С‚Рµ С‚РѕРєРµРЅС‹ РјРѕРґСѓР»СЏ Commerce РґР»СЏ Drupal 10:") . "</p><ul>" .
+        "<li><code>[commerce_order:order_number]</code> вЂ” " . $this->t("Order number") . "</li>" .
+        "<li><code>[commerce_order:total_price]</code> вЂ” " . $this->t("Total price") . "</li>" .
+        "<li><code>[commerce_order:mail]</code> вЂ” " . $this->t("Customer email") . "</li>" .
+        "<li><code>[commerce_order:created]</code> вЂ” " . $this->t("Created date") . "</li>" .
+        "<li><code>[commerce_order:state]</code> вЂ” " . $this->t("Order state") . "</li>" .
+        "<li><code>[commerce_order:order_items]</code> вЂ” " . $this->t("Items (default)") . "</li>" .
+        "<li><code>[commerce_order:order_items_table]</code> вЂ” " . $this->t("HTML table (provided by this module)") . "</li>" .
+        "<li><code>[commerce_order:order_items_text]</code> вЂ” " . $this->t("Plain text items") . "</li>" .
         "<li><code>[commerce_order:billing_profile]</code>, <code>[commerce_order:shipping_profile]</code>, <code>[site:name]</code>, <code>[site:url]</code></li>" .
-        "</ul><p>" . $this->t("Полный список: /admin/help/token") . " — включите модуль Token.</p></details>",
+        "</ul><p>" . $this->t("РџРѕР»РЅС‹Р№ СЃРїРёСЃРѕРє: /admin/help/token") . " вЂ” РІРєР»СЋС‡РёС‚Рµ РјРѕРґСѓР»СЊ Token.</p></details>",
     ];
     if (\Drupal::moduleHandler()->moduleExists("token")) {
       $form["templates"]["token_tree"] = [
@@ -161,30 +161,30 @@ final class SettingsForm extends ConfigFormBase {
 
     $form["behavior"] = [
       "#type" => "details",
-      "#title" => $this->t("Поведение / Behavior"),
+      "#title" => $this->t("РџРѕРІРµРґРµРЅРёРµ / Behavior"),
       "#open" => FALSE,
     ];
     $form["behavior"]["trigger_states"] = [
       "#type" => "checkboxes",
-      "#title" => $this->t("Отправлять при переходе в состояние / Trigger on state"),
+      "#title" => $this->t("РћС‚РїСЂР°РІР»СЏС‚СЊ РїСЂРё РїРµСЂРµС…РѕРґРµ РІ СЃРѕСЃС‚РѕСЏРЅРёРµ / Trigger on state"),
       "#options" => ["draft" => "draft", "validate" => "validate", "place" => "place", "fulfillment" => "fulfillment", "completed" => "completed"],
       "#default_value" => $config->get("trigger_states") ?? ["place"],
-      "#description" => $this->t("Обычно достаточно «place» (размещение заказа)."),
+      "#description" => $this->t("РћР±С‹С‡РЅРѕ РґРѕСЃС‚Р°С‚РѕС‡РЅРѕ В«placeВ» (СЂР°Р·РјРµС‰РµРЅРёРµ Р·Р°РєР°Р·Р°)."),
     ];
     $form["behavior"]["send_copy_to_customer"] = [
       "#type" => "checkbox",
-      "#title" => $this->t("Отправлять копию покупателю / Send copy to customer"),
+      "#title" => $this->t("РћС‚РїСЂР°РІР»СЏС‚СЊ РєРѕРїРёСЋ РїРѕРєСѓРїР°С‚РµР»СЋ / Send copy to customer"),
       "#default_value" => $config->get("send_copy_to_customer"),
     ];
     $form["behavior"]["log_success"] = [
       "#type" => "checkbox",
-      "#title" => $this->t("Логировать успешные отправки"),
+      "#title" => $this->t("Р›РѕРіРёСЂРѕРІР°С‚СЊ СѓСЃРїРµС€РЅС‹Рµ РѕС‚РїСЂР°РІРєРё"),
       "#default_value" => $config->get("log_success"),
     ];
 
     $form["actions"]["test"] = [
       "#type" => "link",
-      "#title" => $this->t("Отправить тестовое письмо"),
+      "#title" => $this->t("РћС‚РїСЂР°РІРёС‚СЊ С‚РµСЃС‚РѕРІРѕРµ РїРёСЃСЊРјРѕ"),
       "#url" => \Drupal\Core\Url::fromRoute("commerce_order_mail.test"),
       "#attributes" => ["class" => ["button", "button--secondary"]],
     ];
