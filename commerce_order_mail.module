@@ -1,0 +1,82 @@
+<?php
+
+declare(strict_types=1);
+
+use Drupal\Core\Form\FormStateInterface;
+
+function commerce_order_mail_help(string $route_name): ?string {
+  if ($route_name === "commerce_order_mail.settings") {
+    return t("Настройте SMTP и шаблоны писем для уведомлений о заказах Commerce. Поддержка токенов Commerce и обход ограничения Яндекса SMTP с 29.06.2026.");
+  }
+  return NULL;
+}
+
+function commerce_order_mail_token_info_alter(array &$info): void {
+  if (isset($info["tokens"]["commerce_order"])) {
+    $info["tokens"]["commerce_order"]["order_items_table"] = [
+      "name" => t("Order items table"),
+      "description" => t("HTML table with order items: SKU, title, quantity, unit price, total."),
+    ];
+    $info["tokens"]["commerce_order"]["order_items_text"] = [
+      "name" => t("Order items (plain text)"),
+      "description" => t("Plain text list of order items."),
+    ];
+  }
+}
+
+function commerce_order_mail_tokens(string $type, array $tokens, array $data, array $options, $bubbleable_metadata): array {
+  $replacements = [];
+  if ($type === "commerce_order" && !empty($data["commerce_order"])) {
+    /** @var \Drupal\commerce_order\Entity\OrderInterface $order */
+    $order = $data["commerce_order"];
+    foreach ($tokens as $name => $original) {
+      switch ($name) {
+        case "order_items_table":
+          $replacements[$original] = _commerce_order_mail_build_items_table($order, TRUE);
+          break;
+        case "order_items_text":
+          $replacements[$original] = _commerce_order_mail_build_items_table($order, FALSE);
+          break;
+      }
+    }
+  }
+  return $replacements;
+}
+
+function _commerce_order_mail_build_items_table($order, bool $html): string {
+  if (!$order->hasField("order_items") || $order->get("order_items")->isEmpty()) {
+    return $html ? "<p>" . t("No items") . "</p>" : (string) t("No items");
+  }
+  $items = $order->getItems();
+  if ($html) {
+    $rows = "";
+    foreach ($items as $item) {
+      $title = $item->getTitle();
+      $qty = $item->getQuantity();
+      $unit = $item->getUnitPrice() ? \Drupal::service("commerce_price.currency_formatter")->format($item->getUnitPrice()->getNumber(), $item->getUnitPrice()->getCurrencyCode()) : "-";
+      $total = $item->getTotalPrice() ? \Drupal::service("commerce_price.currency_formatter")->format($item->getTotalPrice()->getNumber(), $item->getTotalPrice()->getCurrencyCode()) : "-";
+      $sku = "";
+      $purchased = $item->getPurchasedEntity();
+      if ($purchased && $purchased->hasField("sku")) {
+        $sku = $purchased->getSku();
+      }
+      $rows .= "<tr><td>" . htmlspecialchars((string) $sku) . "</td><td>" . htmlspecialchars((string) $title) . "</td><td style=\"text-align:center\">" . htmlspecialchars((string) $qty) . "</td><td style=\"text-align:right\">" . htmlspecialchars((string) $unit) . "</td><td style=\"text-align:right\">" . htmlspecialchars((string) $total) . "</td></tr>";
+    }
+    $totalPrice = $order->getTotalPrice();
+    $totalFormatted = $totalPrice ? \Drupal::service("commerce_price.currency_formatter")->format($totalPrice->getNumber(), $totalPrice->getCurrencyCode()) : "-";
+    return "<table border=\"1\" cellpadding=\"6\" cellspacing=\"0\" style=\"border-collapse:collapse;width:100%\">" .
+      "<thead><tr><th>SKU</th><th>" . t("Product") . "</th><th>" . t("Qty") . "</th><th>" . t("Unit price") . "</th><th>" . t("Total") . "</th></tr></thead>" .
+      "<tbody>" . $rows . "</tbody>" .
+      "<tfoot><tr><td colspan=\"4\" style=\"text-align:right\"><strong>" . t("Order total") . "</strong></td><td style=\"text-align:right\"><strong>" . htmlspecialchars($totalFormatted) . "</strong></td></tr></tfoot>" .
+      "</table>";
+  }
+  $lines = [];
+  foreach ($items as $item) {
+    $lines[] = sprintf("%s x %s — %s", $item->getTitle(), $item->getQuantity(), $item->getTotalPrice() ? $item->getTotalPrice()->__toString() : "-");
+  }
+  $totalPrice = $order->getTotalPrice();
+  if ($totalPrice) {
+    $lines[] = t("Order total: @total", ["@total" => $totalPrice->__toString()])->render();
+  }
+  return implode("\n", $lines);
+}

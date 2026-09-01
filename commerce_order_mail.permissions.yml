@@ -1,0 +1,4 @@
+administer commerce_order_mail:
+  title: "Administer Commerce Order Mail"
+  description: "Configure SMTP and order notification templates."
+  restrict access: true

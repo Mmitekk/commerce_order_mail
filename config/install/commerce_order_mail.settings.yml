@@ -1,0 +1,30 @@
+enabled: true
+recipient: ""
+sender: ""
+sender_name: ""
+smtp_host: "smtp.gmail.com"
+smtp_port: 587
+smtp_encryption: "tls"
+smtp_username: ""
+smtp_password: ""
+smtp_allow_self_signed: false
+smtp_timeout: 15
+subject_template: "Новый заказ [commerce_order:order_number] на [site:name]"
+body_template: |
+  <h2>Новый заказ [commerce_order:order_number]</h2>
+  <p><strong>Дата:</strong> [commerce_order:created]</p>
+  <p><strong>Клиент:</strong> [commerce_order:mail] ([commerce_order:customer_id])</p>
+  <p><strong>Сумма:</strong> [commerce_order:total_price]</p>
+  <p><strong>Состояние:</strong> [commerce_order:state]</p>
+  <hr>
+  <h3>Состав заказа</h3>
+  [commerce_order:order_items_table]
+  <hr>
+  <p><strong>Адрес доставки:</strong><br>[commerce_order:shipping_profile]</p>
+  <p><strong>Адрес выставления счета:</strong><br>[commerce_order:billing_profile]</p>
+body_format: "text/html"
+trigger_states:
+  - "place"
+  - "validate"
+send_copy_to_customer: false
+log_success: true

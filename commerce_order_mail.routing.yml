@@ -1,0 +1,18 @@
+commerce_order_mail.settings:
+  path: "/admin/commerce/config/order-mail"
+  defaults:
+    _form: "\Drupal\commerce_order_mail\Form\SettingsForm"
+    _title: "Commerce Order Mail"
+  requirements:
+    _permission: "administer commerce_order"
+  options:
+    _admin_route: TRUE
+
+commerce_order_mail.test:
+  path: "/admin/commerce/config/order-mail/test"
+  defaults:
+    _controller: "\Drupal\commerce_order_mail\Controller\TestController::sendTest"
+    _title: "Test email"
+  requirements:
+    _permission: "administer commerce_order"
+    _csrf_token: "TRUE"

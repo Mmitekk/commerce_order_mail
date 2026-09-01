@@ -1,0 +1,57 @@
+commerce_order_mail.settings:
+  type: config_object
+  label: "Commerce Order Mail settings"
+  mapping:
+    enabled:
+      type: boolean
+      label: "Enabled"
+    recipient:
+      type: string
+      label: "Recipient"
+    sender:
+      type: string
+      label: "Sender email"
+    sender_name:
+      type: string
+      label: "Sender name"
+    smtp_host:
+      type: string
+      label: "SMTP host"
+    smtp_port:
+      type: integer
+      label: "SMTP port"
+    smtp_encryption:
+      type: string
+      label: "SMTP encryption"
+    smtp_username:
+      type: string
+      label: "SMTP username"
+    smtp_password:
+      type: string
+      label: "SMTP password"
+    smtp_allow_self_signed:
+      type: boolean
+      label: "Allow self-signed"
+    smtp_timeout:
+      type: integer
+      label: "Timeout"
+    subject_template:
+      type: text
+      label: "Subject template"
+    body_template:
+      type: text
+      label: "Body template"
+    body_format:
+      type: string
+      label: "Body format"
+    trigger_states:
+      type: sequence
+      label: "Trigger states"
+      sequence:
+        type: string
+    send_copy_to_customer:
+      type: boolean
+      label: "Send copy to customer"
+    log_success:
+      type: boolean
+      label: "Log success"

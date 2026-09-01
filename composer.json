@@ -1,0 +1,24 @@
+{
+  "name": "mmitekk/commerce_order_mail",
+  "description": "Drupal Commerce order submissions delivery to email via configurable SMTP (Yandex 360 / Gmail / any SMTP). Bypass for Yandex SMTP restriction since 2026-06-29.",
+  "type": "drupal-module",
+  "license": "GPL-2.0-or-later",
+  "keywords": ["drupal", "commerce", "smtp", "mail", "yandex", "gmail"],
+  "require": {
+    "drupal/core": "^10 || ^11",
+    "drupal/commerce": "^2.0",
+    "drupal/token": "^1.0"
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true,
+  "authors": [
+    {
+      "name": "Mmitekk",
+      "homepage": "https://github.com/Mmitekk/commerce_order_mail"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/Mmitekk/commerce_order_mail/issues",
+    "source": "https://github.com/Mmitekk/commerce_order_mail"
+  }
+}

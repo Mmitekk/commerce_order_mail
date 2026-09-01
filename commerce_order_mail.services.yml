@@ -1,0 +1,9 @@
+services:
+  commerce_order_mail.mailer:
+    class: Drupal\commerce_order_mail\Service\OrderMailer
+    arguments: ["@config.factory", "@token", "@logger.factory", "@language_manager", "@plugin.manager.mail", "@commerce_price.currency_formatter", "@datetime.date_formatter"]
+  commerce_order_mail.subscriber:
+    class: Drupal\commerce_order_mail\EventSubscriber\OrderEventSubscriber
+    arguments: ["@commerce_order_mail.mailer", "@config.factory", "@logger.factory"]
+    tags:
+      - { name: event_subscriber }
