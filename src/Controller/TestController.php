@@ -16,7 +16,7 @@ final class TestController extends ControllerBase {
     return new static($container->get("commerce_order_mail.mailer"));
   }
 
-  public function sendTest(): array {
+  public function sendTest(): \Symfony\Component\HttpFoundation\RedirectResponse {
     $ok = $this->mailer->sendTest();
     if ($ok) {
       $this->messenger()->addStatus($this->t("Тестовое письмо отправлено. Проверьте почту получателя. / Test email sent."));
