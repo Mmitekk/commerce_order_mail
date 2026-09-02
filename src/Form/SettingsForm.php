@@ -185,6 +185,12 @@ final class SettingsForm extends ConfigFormBase {
       "#title" => $this->t("Логировать успешные отправки"),
       "#default_value" => $config->get("log_success"),
     ];
+    $form["behavior"]["suppress_checkout_error"] = [
+      "#type" => "checkbox",
+      "#title" => $this->t("Скрывать ошибку «Не удалось отправить e-mail» на странице /checkout/*/complete"),
+      "#description" => $this->t("Убирает красную плашку на завершении заказа, когда Drupal пытается отправить письмо старым способом (Яндекс). Оставьте включенным, если используете этот модуль как основной SMTP."),
+      "#default_value" => $config->get("suppress_checkout_error") ?? TRUE,
+    ];
 
     $form["actions"]["test"] = [
       "#type" => "link",
@@ -214,7 +220,8 @@ final class SettingsForm extends ConfigFormBase {
       ->set("body_format", $form_state->getValue("body_format"))
       ->set("trigger_states", array_values($trigger))
       ->set("send_copy_to_customer", (bool) $form_state->getValue("send_copy_to_customer"))
-      ->set("log_success", (bool) $form_state->getValue("log_success"));
+      ->set("log_success", (bool) $form_state->getValue("log_success"))
+      ->set("suppress_checkout_error", (bool) $form_state->getValue("suppress_checkout_error"));
     $pwd = $form_state->getValue("smtp_password");
     if ($pwd !== "" && $pwd !== NULL) {
       $config->set("smtp_password", $pwd);

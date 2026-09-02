@@ -55,3 +55,6 @@ commerce_order_mail.settings:
     log_success:
       type: boolean
       label: "Log success"
+    suppress_checkout_error:
+      type: boolean
+      label: "Suppress checkout error"

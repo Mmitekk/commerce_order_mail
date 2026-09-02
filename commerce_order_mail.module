@@ -11,6 +11,37 @@ function commerce_order_mail_help(string $route_name): ?string {
   return NULL;
 }
 
+function commerce_order_mail_preprocess_status_messages(array &$variables): void {
+  $route = \Drupal::routeMatch()->getRouteName();
+  $isCheckoutComplete = $route === "commerce_checkout.form" || $route === "commerce_checkout.checkout_complete" || str_contains(\Drupal::request()->getPathInfo(), "/checkout/") && str_contains(\Drupal::request()->getPathInfo(), "/complete");
+  if (!$isCheckoutComplete) {
+    return;
+  }
+  if (!\Drupal::config("commerce_order_mail.settings")->get("suppress_checkout_error")) {
+    return;
+  }
+  foreach ($variables["message_list"] ?? [] as $type => $messages) {
+    foreach ($messages as $k => $msg) {
+      $text = "";
+      if (is_string($msg)) {
+        $text = $msg;
+      }
+      elseif (is_array($msg) && isset($msg["#markup"])) {
+        $text = (string) $msg["#markup"];
+      }
+      else {
+        try { $text = strip_tags((string) \Drupal::service("renderer")->renderPlain($msg)); } catch (\Throwable) { $text = ""; }
+      }
+      if (str_contains($text, "Не удалось отправить e-mail") || str_contains($text, "Unable to send e-mail") || str_contains($text, "Unable to send email")) {
+        unset($variables["message_list"][$type][$k]);
+      }
+    }
+    if (empty($variables["message_list"][$type])) {
+      unset($variables["message_list"][$type]);
+    }
+  }
+}
+
 function commerce_order_mail_token_info_alter(array &$info): void {
   if (isset($info["tokens"]["commerce_order"])) {
     $info["tokens"]["commerce_order"]["order_items_table"] = [

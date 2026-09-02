@@ -28,3 +28,4 @@ trigger_states:
   - "validate"
 send_copy_to_customer: false
 log_success: true
+suppress_checkout_error: true
