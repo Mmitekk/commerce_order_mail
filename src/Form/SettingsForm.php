@@ -95,8 +95,12 @@ final class SettingsForm extends ConfigFormBase {
     $form["smtp"]["smtp_password"] = [
       "#type" => "password",
       "#title" => $this->t("SMTP пароль / Password or App Password"),
-      "#description" => $this->t("Оставьте пустым чтобы не менять. Для Gmail используйте App Password, не обычный пароль."),
+      "#description" => $this->t("Оставьте пустым чтобы не менять.<br><br><strong>Gmail требует App Password (Пароль приложения):</strong><br>Обычный пароль Gmail не работает с SMTP. Вам нужно создать «Пароль приложения»: <a href=\"https://myaccount.google.com/apppasswords\" target=\"_blank\">myaccount.google.com/apppasswords</a> → Выберите «Почта» → Сгенерируйте 16-значный код → Вставьте его в это поле.<br>Предварительно включите 2-этапную аутентификацию: <a href=\"https://myaccount.google.com/signinoptions/two-step-verification\" target=\"_blank\">myaccount.google.com → Безопасность → 2-этапная аутентификация</a>.<br><em>Для Mail.ru / Яндекс 360 / корпоративной почты используйте обычный SMTP-пароль.</em>"),
       "#attributes" => ["autocomplete" => "new-password"],
+    ];
+    $form["smtp"]["smtp_oauth_help"] = [
+      "#type" => "markup",
+      "#markup" => $this->t("<details style=\"margin-top:8px;border:1px solid #ddd;padding:8px;border-radius:4px;background:#f9f9f9\"><summary><strong>Где найти OAuth / App Password? / Where to find OAuth?</strong></summary><ol style=\"margin:8px 0 0 20px\"><li><strong>Gmail/Google:</strong> <a href=\"https://myaccount.google.com/apppasswords\" target=\"_blank\">myaccount.google.com/apppasswords</a> → если нет пункта — сначала включите <a href=\"https://myaccount.google.com/signinoptions/two-step-verification\" target=\"_blank\">2FA</a>. Выберите приложение «Почта», устройство «Другое» → скопируйте 16-символьный код (например, <code>abcd efgh ijkl mnop</code> без пробелов). Вставьте в «SMTP пароль», а в «SMTP пользователь» — ваш полный Gmail (user@gmail.com), host <code>smtp.gmail.com</code>, port 587/TLS или 465/SSL.</li><li><strong>OAuth2 (альтернатива):</strong> в Google Cloud Console создайте OAuth-клиент, но для SMTP этого модуля достаточно App Password — проще и надёжнее.</li><li><strong>Mail.ru:</strong> <code>smtp.mail.ru:465</code> SSL, пароль — от почты.</li><li><strong>Яндекс 360 (платно):</strong> <code>smtp.yandex.ru:465</code> SSL, пароль — от Яндекс ID (с 29.06.2026 бесплатно не работает).</li></ol><p style=\"margin:8px 0 0\">Подробнее: <a href=\"https://support.google.com/accounts/answer/185833\" target=\"_blank\">support.google.com — App Passwords</a></p></details>"),
     ];
     $form["smtp"]["smtp_allow_self_signed"] = [
       "#type" => "checkbox",
