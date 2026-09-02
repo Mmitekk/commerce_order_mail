@@ -95,15 +95,40 @@ final class OrderMailer {
 
   private function sendViaSmtp(string $to, string $from, string $fromName, string $subject, string $body, bool $isHtml, string $host, int $port, string $encryption, string $user, string $pass, int $timeout, bool $allowSelfSigned): bool {
     try {
-      $transport = new EsmtpTransport($host, $port, $encryption === "ssl");
-      if ($encryption === "tls" || $encryption === "ssl") {
-        $transport->setStreamOptions(["ssl" => ["verify_peer" => !$allowSelfSigned, "verify_peer_name" => !$allowSelfSigned]]);
+      $useDsn = FALSE;
+      $transport = NULL;
+      if ($allowSelfSigned && $encryption !== "none") {
+        try {
+          $scheme = $encryption === "ssl" ? "smtps" : "smtp";
+          $creds = $user !== "" ? rawurlencode($user) . ":" . rawurlencode($pass) . "@" : "";
+          $dsn = sprintf("%s://%s%s:%d", $scheme, $creds, $host, $port);
+          $query = [];
+          if ($encryption === "tls") {
+            $query[] = "encryption=tls";
+          }
+          $query[] = "verify_peer=0";
+          $dsn .= "?" . implode("&", $query);
+          $transport = \Symfony\Component\Mailer\Transport::fromDsn($dsn);
+          $useDsn = TRUE;
+        }
+        catch (\Throwable) {
+          $transport = NULL;
+          $useDsn = FALSE;
+        }
       }
-      if ($user !== "") {
-        $transport->setUsername($user);
-        $transport->setPassword($pass);
+      if (!$useDsn) {
+        $transport = new EsmtpTransport($host, $port, $encryption === "ssl");
+        if (($encryption === "tls" || $encryption === "ssl") && method_exists($transport, "setStreamOptions")) {
+          $transport->setStreamOptions(["ssl" => ["verify_peer" => !$allowSelfSigned, "verify_peer_name" => !$allowSelfSigned, "allow_self_signed" => $allowSelfSigned]]);
+        }
+        if ($user !== "") {
+          $transport->setUsername($user);
+          $transport->setPassword($pass);
+        }
+        if (method_exists($transport, "setTimeout")) {
+          $transport->setTimeout($timeout);
+        }
       }
-      $transport->setTimeout($timeout);
 
       $mailer = new Mailer($transport);
       $email = (new Email())
