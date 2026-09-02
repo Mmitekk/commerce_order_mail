@@ -21,6 +21,22 @@ function commerce_order_mail_token_info_alter(array &$info): void {
       "name" => t("Order items (plain text)"),
       "description" => t("Plain text list of order items."),
     ];
+    $info["tokens"]["commerce_order"]["shipping_address"] = [
+      "name" => t("Shipping address (formatted)"),
+      "description" => t("Formatted shipping address from profile. Works even if standard [commerce_order:shipping_profile] is empty."),
+    ];
+    $info["tokens"]["commerce_order"]["billing_address"] = [
+      "name" => t("Billing address (formatted)"),
+      "description" => t("Formatted billing address from profile."),
+    ];
+    $info["tokens"]["commerce_order"]["shipping_profile_formatted"] = [
+      "name" => t("Shipping profile (formatted)"),
+      "description" => t("Alias for shipping_address, with HTML line breaks for HTML mails."),
+    ];
+    $info["tokens"]["commerce_order"]["billing_profile_formatted"] = [
+      "name" => t("Billing profile (formatted)"),
+      "description" => t("Alias for billing_address."),
+    ];
   }
 }
 
@@ -29,6 +45,10 @@ function commerce_order_mail_tokens(string $type, array $tokens, array $data, ar
   if ($type === "commerce_order" && !empty($data["commerce_order"])) {
     /** @var \Drupal\commerce_order\Entity\OrderInterface $order */
     $order = $data["commerce_order"];
+    $isHtml = !empty($options["sanitize"]) ? FALSE : TRUE;
+    if (isset($options["sanitize"]) && $options["sanitize"] === FALSE) {
+      $isHtml = TRUE;
+    }
     foreach ($tokens as $name => $original) {
       switch ($name) {
         case "order_items_table":
@@ -37,10 +57,129 @@ function commerce_order_mail_tokens(string $type, array $tokens, array $data, ar
         case "order_items_text":
           $replacements[$original] = _commerce_order_mail_build_items_table($order, FALSE);
           break;
+        case "shipping_address":
+        case "shipping_profile_formatted":
+          $replacements[$original] = _commerce_order_mail_render_profile_address($order, "shipping", $isHtml);
+          break;
+        case "billing_address":
+        case "billing_profile_formatted":
+          $replacements[$original] = _commerce_order_mail_render_profile_address($order, "billing", $isHtml);
+          break;
+        case "shipping_profile":
+          $val = _commerce_order_mail_render_profile_address($order, "shipping", $isHtml);
+          $replacements[$original] = $val !== "" ? $val : t("—", [], ["langcode" => "ru"])->render();
+          break;
+        case "billing_profile":
+          $val = _commerce_order_mail_render_profile_address($order, "billing", $isHtml);
+          $replacements[$original] = $val !== "" ? $val : t("—", [], ["langcode" => "ru"])->render();
+          break;
       }
     }
   }
   return $replacements;
+}
+
+function _commerce_order_mail_get_profile($order, string $kind) {
+  $candidates = [];
+  if ($kind === "billing") {
+    if (method_exists($order, "getBillingProfile")) {
+      try { $p = $order->getBillingProfile(); if ($p) { $candidates[] = $p; } } catch (\Throwable) {}
+    }
+    foreach (["billing_profile", "billing_information", "profile", "customer_profile"] as $field) {
+      if ($order->hasField($field) && !$order->get($field)->isEmpty()) {
+        $e = $order->get($field)->entity;
+        if ($e) { $candidates[] = $e; }
+      }
+    }
+  }
+  else {
+    if (method_exists($order, "getShippingProfile")) {
+      try { $p = $order->getShippingProfile(); if ($p) { $candidates[] = $p; } } catch (\Throwable) {}
+    }
+    foreach (["shipping_profile", "shipping_information", "shipment", "shipments"] as $field) {
+      if ($order->hasField($field) && !$order->get($field)->isEmpty()) {
+        $val = $order->get($field);
+        foreach ($val as $item) {
+          $e = $item->entity ?? NULL;
+          if ($e) {
+            if ($e->getEntityTypeId() === "profile") { $candidates[] = $e; }
+            elseif ($e->hasField("shipping_profile") && !$e->get("shipping_profile")->isEmpty()) {
+              $candidates[] = $e->get("shipping_profile")->entity;
+            }
+          }
+        }
+      }
+    }
+    if (empty($candidates) && \Drupal::hasService("entity_type.manager")) {
+      try {
+        $storage = \Drupal::entityTypeManager()->getStorage("profile");
+        $q = $storage->getQuery()->accessCheck(FALSE)->condition("type", "customer", "IN")->sort("profile_id", "DESC")->range(0, 5)->execute();
+        // Try to find profile linked via order's data or recent.
+      } catch (\Throwable) {}
+    }
+  }
+  foreach ($candidates as $c) {
+    if ($c) { return $c; }
+  }
+  return NULL;
+}
+
+function _commerce_order_mail_render_profile_address($order, string $kind, bool $html): string {
+  $profile = _commerce_order_mail_get_profile($order, $kind);
+  if (!$profile) {
+    if ($kind === "shipping") {
+      $profile = _commerce_order_mail_get_profile($order, "billing");
+    }
+    if (!$profile) { return ""; }
+  }
+  $lines = [];
+  $phone = "";
+  foreach (["field_phone", "telephone", "phone", "field_telephone"] as $f) {
+    if ($profile->hasField($f) && !$profile->get($f)->isEmpty()) {
+      $phone = (string) $profile->get($f)->value;
+      if ($phone !== "") { break; }
+    }
+  }
+  $address = NULL;
+  if ($profile->hasField("address") && !$profile->get("address")->isEmpty()) {
+    $address = $profile->get("address")->first();
+  }
+  elseif ($profile->hasField("field_address") && !$profile->get("field_address")->isEmpty()) {
+    $address = $profile->get("field_address")->first();
+  }
+  if ($address) {
+    $vals = $address->getValue();
+    $given = trim(($vals["given_name"] ?? "") . " " . ($vals["family_name"] ?? ""));
+    $org = $vals["organization"] ?? "";
+    if ($given !== "") { $lines[] = $given; }
+    if ($org !== "") { $lines[] = $org; }
+    if ($phone !== "") { $lines[] = $phone; }
+    foreach (["address_line1", "address_line2", "locality", "administrative_area", "postal_code"] as $k) {
+      if (!empty($vals[$k])) { $lines[] = $vals[$k]; }
+    }
+    $country = $vals["country_code"] ?? "";
+    if ($country !== "") {
+      try {
+        $countries = \Drupal::service("address.country_repository")->getList();
+        $lines[] = $countries[$country] ?? $country;
+      } catch (\Throwable) { $lines[] = $country; }
+    }
+  }
+  else {
+    if ($phone !== "") { $lines[] = $phone; }
+    if ($profile->hasField("field_full_name") && !$profile->get("field_full_name")->isEmpty()) {
+      $lines[] = (string) $profile->get("field_full_name")->value;
+    }
+    elseif (method_exists($profile, "label")) {
+      $label = $profile->label();
+      if ($label) { $lines[] = $label; }
+    }
+  }
+  if (empty($lines)) { return ""; }
+  if ($html) {
+    return implode("<br>", array_map(fn($l) => htmlspecialchars($l, ENT_QUOTES, "UTF-8"), $lines));
+  }
+  return implode("\n", $lines);
 }
 
 function _commerce_order_mail_build_items_table($order, bool $html): string {
