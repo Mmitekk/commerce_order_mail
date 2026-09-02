@@ -12,12 +12,16 @@ function commerce_order_mail_help(string $route_name): ?string {
 }
 
 function commerce_order_mail_preprocess_status_messages(array &$variables): void {
-  $route = \Drupal::routeMatch()->getRouteName();
-  $isCheckoutComplete = $route === "commerce_checkout.form" || $route === "commerce_checkout.checkout_complete" || str_contains(\Drupal::request()->getPathInfo(), "/checkout/") && str_contains(\Drupal::request()->getPathInfo(), "/complete");
-  if (!$isCheckoutComplete) {
+  $suppress = \Drupal::config("commerce_order_mail.settings")->get("suppress_checkout_error");
+  if ($suppress === FALSE) {
     return;
   }
-  if (!\Drupal::config("commerce_order_mail.settings")->get("suppress_checkout_error")) {
+  $path = "";
+  try { $path = \Drupal::request()->getPathInfo(); } catch (\Throwable) {}
+  $route = "";
+  try { $route = \Drupal::routeMatch()->getRouteName(); } catch (\Throwable) {}
+  $isCheckoutComplete = (str_contains($path, "/checkout/") && str_contains($path, "/complete")) || in_array($route, ["commerce_checkout.form", "commerce_checkout.checkout_complete"], TRUE);
+  if (!$isCheckoutComplete) {
     return;
   }
   foreach ($variables["message_list"] ?? [] as $type => $messages) {

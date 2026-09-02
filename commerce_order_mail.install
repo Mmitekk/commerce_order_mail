@@ -1,0 +1,10 @@
+<?php
+
+declare(strict_types=1);
+
+function commerce_order_mail_update_10001(): void {
+  $config = \Drupal::configFactory()->getEditable("commerce_order_mail.settings");
+  if ($config->get("suppress_checkout_error") === NULL) {
+    $config->set("suppress_checkout_error", TRUE)->save();
+  }
+}
