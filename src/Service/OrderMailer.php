@@ -42,16 +42,20 @@ final class OrderMailer {
     $tokenData = ["commerce_order" => $order, "site" => []];
     $subjectTemplate = (string) $config->get("subject_template");
     $bodyTemplate = (string) $config->get("body_template");
-    $subject = $this->token->replace($subjectTemplate, $tokenData, ["clear" => TRUE]);
-    $body = $this->token->replace($bodyTemplate, $tokenData, ["clear" => TRUE]);
-
     $sender = (string) $config->get("sender");
     $senderName = (string) $config->get("sender_name");
     $bodyFormat = (string) ($config->get("body_format") ?: "text/html");
     $isHtml = str_contains($bodyFormat, "html");
+    $bodyTemplate = $this->preReplaceCommerceTokens($bodyTemplate, $order, $isHtml);
+    $subject = $this->token->replace($subjectTemplate, $tokenData, ["clear" => TRUE]);
+    $body = $this->token->replace($bodyTemplate, $tokenData, $isHtml ? ["clear" => TRUE, "sanitize" => FALSE] : ["clear" => TRUE]);
+    if ($isHtml) {
+      $body = html_entity_decode($body, ENT_QUOTES | ENT_HTML5, "UTF-8");
+    }
 
     if (!$isHtml) {
       $subject = strip_tags($subject);
+      $body = strip_tags($body);
     }
 
     $smtpHost = (string) $config->get("smtp_host");
@@ -181,6 +185,18 @@ final class OrderMailer {
     /** @var OrderInterface $order */
     $order = $storage->create(["type" => $typeId, "order_number" => "TEST-0001", "mail" => \Drupal::currentUser()->getEmail() ?: "test@example.com", "state" => "place"]);
     return $order;
+  }
+
+  private function preReplaceCommerceTokens(string $template, OrderInterface $order, bool $isHtml): string {
+    if (str_contains($template, "[commerce_order:order_items_table]")) {
+      $html = $isHtml ? _commerce_order_mail_build_items_table($order, TRUE) : _commerce_order_mail_build_items_table($order, FALSE);
+      $template = str_replace("[commerce_order:order_items_table]", $html, $template);
+    }
+    if (str_contains($template, "[commerce_order:order_items_text]")) {
+      $text = _commerce_order_mail_build_items_table($order, FALSE);
+      $template = str_replace("[commerce_order:order_items_text]", $text, $template);
+    }
+    return $template;
   }
 
   private function parseRecipients(string $raw): array {
