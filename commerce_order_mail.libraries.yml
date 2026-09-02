@@ -2,3 +2,8 @@ admin:
   css:
     theme:
       css/admin.css: {}
+
+checkout-hide:
+  css:
+    theme:
+      css/checkout-hide.css: {}

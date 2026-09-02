@@ -11,6 +11,14 @@ function commerce_order_mail_help(string $route_name): ?string {
   return NULL;
 }
 
+function commerce_order_mail_page_attachments(array &$attachments): void {
+  $path = "";
+  try { $path = \Drupal::request()->getPathInfo(); } catch (\Throwable) {}
+  if (str_starts_with($path, "/checkout/")) {
+    $attachments["#attached"]["library"][] = "commerce_order_mail/checkout-hide";
+  }
+}
+
 function commerce_order_mail_preprocess_status_messages(array &$variables): void {
   $suppress = \Drupal::config("commerce_order_mail.settings")->get("suppress_checkout_error");
   if ($suppress === FALSE) {
